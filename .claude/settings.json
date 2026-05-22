@@ -1,4 +1,12 @@
 {
+  "permissions": {
+    "allow": [
+      "mcp__qgis-mcp__*"
+    ],
+    "additionalDirectories": [
+      "C:/Users/Miron.Thylmann/AppData/Roaming/QGIS/QGIS3/profiles/developer/python/plugins/mastr_matcher_plugin"
+    ]
+  },
   "hooks": {
     "PreCompact": [
       {
