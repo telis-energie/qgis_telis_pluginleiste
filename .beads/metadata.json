@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "qgis_telis_pluginleiste",
+  "project_id": "46be080a-e5ff-4499-b24c-3be21524a36b"
+}
