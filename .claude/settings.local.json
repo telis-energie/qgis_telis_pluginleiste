@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__qgis-mcp__execute_code",
+      "Skill(update-config)",
+      "PowerShell(gh release *)",
+      "Bash(gh release *)"
+    ]
+  }
+}
