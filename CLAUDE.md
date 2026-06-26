@@ -47,10 +47,37 @@ bd close <id>         # Complete work
 - NEVER say "ready to push when you are" - YOU must push
 - If push fails, resolve and retry until it succeeds
 
-## Projekttyp: QGIS-Plugin
+## Projekttyp: Dokumentation / Referenzmuster
 
-Dies ist ein **QGIS 3.x-Plugin** (PyQGIS, Python), entwickelt für Telis Energie.
-Plugin-Name: **Telis Pluginleiste** — Erstellt die gemeinsame Telis-Werkzeugleiste.
+Dieses Repo enthält **kein eigenständiges Plugin**. Es dokumentiert das verteilte Toolbar-Muster aller Telis-QGIS-Plugins.
+
+### Prinzip: Geteilte TelisToolbar
+
+Die Telis-Werkzeugleiste existiert nicht als eigenes Plugin. Stattdessen trägt **jedes Telis-Plugin** die Toolbar selbst ein:
+
+```python
+TOOLBAR_OBJECT_NAME = "TelisToolbar"
+TOOLBAR_NAME = "Telis"
+
+# 1. Prüfen ob Toolbar schon existiert (anderes Plugin hat sie angelegt)
+existing = self.iface.mainWindow().findChild(QToolBar, self.TOOLBAR_OBJECT_NAME)
+
+# 2. Falls nicht: neu anlegen
+toolbar = self.iface.addToolBar(self.TOOLBAR_NAME)
+toolbar.setObjectName(self.TOOLBAR_OBJECT_NAME)
+```
+
+- Welches Telis-Plugin zuerst startet, erstellt die Toolbar
+- Alle anderen finden sie per `findChild(QToolBar, "TelisToolbar")` und hängen sich dran
+- Beim Entladen des letzten Plugins wird sie aufgeräumt
+
+### Betroffene Plugins
+
+- `telis_projekte_eigentuemer` (Referenzimplementierung: telis_projekte_eigentuemer.py:153–157)
+- `qgis_telis_flst_finder`
+- `mastr_matcher_plugin`
+- `saturn_planer_plugin`
+- `Flurstuecksuche_de`
 
 ### Aktive Agenten
 
