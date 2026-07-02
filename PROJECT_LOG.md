@@ -20,6 +20,7 @@ Dieses Repo ist **kein eigenständiges QGIS-Plugin**, sondern das Referenzmuster
 - `d605903` bd init: Beads-Issue-Tracking erneut initialisiert (zweiter Init, vermutlich nach Neuaufsetzung der Datenbank)
 - `d7a2b32` chore(beads): 3 Issues aus telis_db migriert
 - `95ae3ce` docs: TelisToolbar-Muster dokumentiert – kein eigenständiges Plugin
+- **2026-07-02**: Persistenz-Architektur eingeführt (bd=nur Tasks, Claude-Memory=Wissen, PROJECT_LOG.md=Doku) + Pre-Commit-Hook gegen Klartext-Zugangsdaten eingerichtet, Teil eines projektübergreifenden Rollouts über alle 12 Telis-Repos (Anlass: Klartext-DB-Passwort in `qgis_processing_skripte` gefunden und bereinigt).
 
 ## Entscheidungen & Erkenntnisse
 
@@ -51,6 +52,7 @@ Dieses Repo ist **kein eigenständiges QGIS-Plugin**, sondern das Referenzmuster
 ## Aktueller Stand
 
 - CLAUDE.md enthielt bis 2026-07-02 den "Beads Issue Tracker"-Block doppelt (einmal ohne, einmal mit `<!-- BEGIN/END BEADS INTEGRATION -->`-Markern) mit veralteten `bd remember`-Regeln. Beide Vorkommen wurden auf die neue Drei-Wege-Persistenz-Architektur umgestellt.
+- Pre-Commit-Hook aktiv (`.githooks/pre-commit`, `core.hooksPath=.githooks`) — blockiert Commits mit Klartext-Zugangsdaten/Secrets, getestet und verifiziert.
 - Kein eigener Plugin-Code in diesem Repo, ausschließlich Dokumentation/Referenzmuster.
 
 ## Offene Punkte
