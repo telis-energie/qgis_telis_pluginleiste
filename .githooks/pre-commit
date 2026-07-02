@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# Pre-commit hook: blockiert Commits mit Klartext-Zugangsdaten/Secrets.
+#
+# Aktivieren (einmalig pro Klon):
+#   git config core.hooksPath .githooks
+#
+# Fehlalarm? Einzelnen Commit ohne Pruefung durchfuehren:
+#   git commit --no-verify
+set -eu
+
+STAGED_DIFF=$(git diff --cached -U0 --diff-filter=ACM -- . ':(exclude).githooks/*' || true)
+
+if [ -z "$STAGED_DIFF" ]; then
+    exit 0
+fi
+
+# Nur neu hinzugefuegte Zeilen pruefen (+, ohne den +++ Datei-Header)
+ADDED_LINES=$(printf '%s\n' "$STAGED_DIFF" | grep -E '^\+[^+]' || true)
+
+FOUND=0
+
+check_pattern() {
+    label="$1"
+    pattern="$2"
+    hits=$(printf '%s\n' "$ADDED_LINES" | grep -Ei -e "$pattern" || true)
+    if [ -n "$hits" ]; then
+        echo "Moeglicher Secret-Fund ($label):"
+        printf '%s\n' "$hits" | sed 's/^/    /'
+        FOUND=1
+    fi
+}
+
+# Passwort/Secret/Key/Token als Literal zugewiesen (nicht per Env-Var/getenv)
+check_pattern "Passwort- oder Secret-Literal" \
+    "(password|passwd|pwd|secret|api[_-]?key|access[_-]?key|token)[[:space:]]*[:=][[:space:]]*[\"'][^\"'[:space:]]{6,}[\"']"
+
+# Connection-String mit eingebettetem Passwort, z.B. postgres://user:pass@host
+check_pattern "Connection-String mit Passwort" \
+    "(postgres(ql)?|mysql|mongodb(\+srv)?)://[^:/@[:space:]]+:[^@/[:space:]]+@"
+
+# AWS Access Key ID
+check_pattern "AWS Access Key" \
+    "AKIA[0-9A-Z]{16}"
+
+# Private-Key-Block
+check_pattern "Private-Key-Block" \
+    "-----BEGIN (RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----"
+
+if [ "$FOUND" -eq 1 ]; then
+    echo ""
+    echo "Commit abgebrochen: Zugangsdaten/Secrets gehoeren nicht in den Code."
+    echo "Stattdessen: pg_service.conf, .env (in .gitignore) oder Umgebungsvariablen."
+    echo "Falscher Alarm? git commit --no-verify"
+    exit 1
+fi
+
+exit 0

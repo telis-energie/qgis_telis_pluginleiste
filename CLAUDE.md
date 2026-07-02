@@ -17,9 +17,10 @@ bd close <id>         # Complete work
 
 ### Rules
 
-- Use `bd` for ALL task tracking — do NOT use TodoWrite, TaskCreate, or markdown TODO lists
+- Use `bd` ONLY for task tracking (issues, status, operative planning)
 - Run `bd prime` for detailed command reference and session close protocol
-- Use `bd remember` for persistent knowledge — do NOT use MEMORY.md files
+- Persistentes, projektspezifisches Wissen gehört in Claudes globales Memory-System (`~/.claude/projects/.../memory/`), NICHT in `bd remember` — siehe globale CLAUDE.md
+- Projektverlauf, Entscheidungen, Änderungen und aktueller Stand: `PROJECT_LOG.md` im Projektroot (reine Doku, kein Task-Ersatz)
 
 ## Session Completion
 
@@ -100,9 +101,10 @@ bd close <id>         # Complete work
 
 ### Rules
 
-- Use `bd` for ALL task tracking — do NOT use TodoWrite, TaskCreate, or markdown TODO lists
+- Use `bd` ONLY for task tracking (issues, status, operative planning)
 - Run `bd prime` for detailed command reference and session close protocol
-- Use `bd remember` for persistent knowledge — do NOT use MEMORY.md files
+- Persistentes, projektspezifisches Wissen gehört in Claudes globales Memory-System (`~/.claude/projects/.../memory/`), NICHT in `bd remember` — siehe globale CLAUDE.md
+- Projektverlauf, Entscheidungen, Änderungen und aktueller Stand: `PROJECT_LOG.md` im Projektroot (reine Doku, kein Task-Ersatz)
 
 ## Session Completion
 
